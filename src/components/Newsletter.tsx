@@ -13,27 +13,22 @@ const Newsletter = () => {
   };
 
   return (
-    <section className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
+    <section className="relative py-28 px-6 sm:px-10 lg:px-16 bg-gray-50 overflow-hidden">
       {/* Background Image */}
       <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat blur-lg scale-105"
-        style={{
-          // Direct image URL from Unsplash CDN so it renders as a background
-          backgroundImage:
-            "url('https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=1600&q=80')",
-        }}
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat blur-lg scale-105 newsletter-bg"
       />
       <div className="absolute inset-0 bg-black/60" />
       
       <div className="relative z-10 max-w-4xl mx-auto text-center">
         {/* Headline */}
-        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
+        <h2 className="text-[26px] sm:text-[30px] lg:text-[36px] font-bold text-white mb-4 leading-[1.2] tracking-wide font-heading">
           Get Your Healthy Snacking Inspiration
           <span className="block">Straight to Your Inbox</span>
         </h2>
         
         {/* Subheading */}
-        <p className="text-lg sm:text-xl text-gray-200 mb-8 max-w-2xl mx-auto">
+        <p className="text-[16px] sm:text-[16px] text-gray-200 mb-8 max-w-2xl mx-auto leading-[1.75] font-body">
           Subscribe for exclusive recipes, health tips, and special offers
         </p>
 
@@ -46,11 +41,11 @@ const Newsletter = () => {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email address"
               required
-              className="flex-1 px-6 py-4 rounded-full text-gray-900 placeholder-gray-500 bg-white shadow-lg focus:outline-none focus:ring-4 focus:ring-white focus:ring-opacity-50 transition-all duration-300"
+              className="flex-1 px-6 py-4 rounded-full text-gray-900 placeholder-gray-500 bg-white shadow-lg focus:outline-none focus:ring-4 focus:ring-white focus:ring-opacity-50 transition-all duration-300 text-[15px] font-body"
             />
             <button
               type="submit"
-              className="px-8 py-4 bg-[#EDEAD3] hover:bg-[#d8d4bf] text-gray-900 font-semibold rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl whitespace-nowrap"
+              className="px-8 py-4 bg-black hover:bg-opacity-90 text-white font-semibold rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl whitespace-nowrap text-[15px] tracking-wide font-body"
             >
               Subscribe Now
             </button>
@@ -58,7 +53,7 @@ const Newsletter = () => {
         </form>
 
         {/* Privacy Text */}
-        <p className="text-sm text-gray-300 mt-6">
+        <p className="text-[14px] text-gray-300 mt-6 leading-[1.6] font-body">
           We respect your privacy. Unsubscribe at any time.
         </p>
       </div>

@@ -15,38 +15,47 @@ const heroImages = [
 
 const Hero = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [previousImageIndex, setPreviousImageIndex] = useState(0);
   const [isFading, setIsFading] = useState(false);
 
   // Advance slide every 5 seconds
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentImageIndex((prev) => (prev + 1) % heroImages.length);
+      setIsFading(true);
+      // Change image halfway through the fade
+      setTimeout(() => {
+        setPreviousImageIndex(currentImageIndex);
+        setCurrentImageIndex((prev) => (prev + 1) % heroImages.length);
+      }, 350); // Half way through the 700ms fade
+      // Reset fade state after transition completes
+      setTimeout(() => {
+        setIsFading(false);
+      }, 700);
     }, 5000);
 
     return () => clearInterval(interval);
-  }, []);
-
-  // Trigger fade animation on slide change
-  useEffect(() => {
-    setIsFading(true);
-    const timeout = setTimeout(() => {
-      setIsFading(false);
-    }, 700); // match duration-700
-
-    return () => clearTimeout(timeout);
   }, [currentImageIndex]);
 
   return (
     <section
-      className="relative min-h-screen flex items-center py-16 px-4 sm:px-6 lg:px-8 overflow-hidden"
+      className="relative min-h-screen flex items-center py-28 px-6 sm:px-10 lg:px-16 overflow-hidden"
     >
-      {/* Background image layer */}
+      {/* Background image layers */}
+      {/* Previous image - fades out */}
       <div
-        className={`absolute inset-0 bg-cover bg-center transition-opacity duration-700 blur-sm brightness-[0.98]`}
+        className={`absolute inset-0 bg-cover bg-center transition-opacity duration-700 blur-sm ${isFading ? 'opacity-0' : 'opacity-100'}`}
         style={{
-          backgroundImage: `url(${heroImages[currentImageIndex]})`,
-          opacity: isFading ? 0 : 1,
-        }}
+          '--bg-image': `url(${heroImages[previousImageIndex]})`,
+          backgroundImage: 'var(--bg-image)',
+        } as React.CSSProperties}
+      />
+      {/* Current image - fades in */}
+      <div
+        className={`absolute inset-0 bg-cover bg-center transition-opacity duration-700 blur-sm ${isFading ? 'opacity-100' : 'opacity-0'}`}
+        style={{
+          '--bg-image': `url(${heroImages[currentImageIndex]})`,
+          backgroundImage: 'var(--bg-image)',
+        } as React.CSSProperties}
       />
 
       {/* Dark overlay for readability */}
@@ -54,20 +63,20 @@ const Hero = () => {
 
       {/* Content */}
       <div className="relative max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
           {/* Left Column - Text Content */}
           <div className="space-y-6">
             <div className="space-y-4">
-              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white leading-tight">
+              <h1 className="text-[32px] sm:text-[40px] lg:text-[52px] font-bold text-white leading-[1.15] tracking-wide font-heading">
                 Discover Nature's{' '}
                 <span className="text-gray-300">Crunchy Treasures</span>
               </h1>
-              <p className="text-base text-gray-200 leading-relaxed max-w-md">
+              <p className="text-[16px] text-gray-200 leading-[1.75] max-w-md font-body">
                 From premium almonds to exotic dried berries, explore our collection of handpicked dry fruits that bring health and flavor to your daily routine. Sustainably sourced, naturally delicious.
               </p>
             </div>
             
-            <button className="bg-[#EDEAD3] text-gray-900 px-6 py-3 rounded-md text-sm font-medium hover:bg-[#d8d4bf] transition-colors duration-300">
+            <button className="bg-black text-white px-8 py-4 rounded-full text-[15px] font-semibold tracking-wide hover:bg-opacity-90 transition-all duration-300 font-body shadow-lg hover:shadow-xl">
               Shop Now
             </button>
           </div>

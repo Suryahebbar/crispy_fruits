@@ -4,17 +4,17 @@ import React from 'react';
 
 const Testimonials = () => {
   return (
-    <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+    <section className="py-28 px-6 sm:px-10 lg:px-16 bg-white">
       <div className="max-w-7xl mx-auto">
         {/* Section Title */}
-        <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 text-center mb-12">
+        <h2 className="text-[26px] sm:text-[30px] lg:text-[36px] font-bold text-gray-900 text-center mb-12 leading-[1.2] tracking-wide font-heading">
           What Our Customers Say
         </h2>
 
         {/* Two Column Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-12">
           {/* Featured Review Card */}
-          <div className="bg-gradient-to-br from-orange-50 to-amber-50 rounded-xl shadow-lg p-8 lg:p-10">
+          <div className="bg-gradient-to-br from-orange-50 to-amber-50 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 p-8 lg:p-10">
             {/* Star Rating */}
             <div className="flex items-center mb-6">
               {[...Array(5)].map((_, i) => (
@@ -30,23 +30,23 @@ const Testimonials = () => {
             </div>
 
             {/* Review Title */}
-            <h3 className="text-2xl font-bold text-gray-900 mb-6">
+            <h3 className="text-[22px] font-semibold text-gray-900 mb-6 leading-[1.3] font-heading">
               Simply Outstanding Quality!
             </h3>
 
             {/* Review Text */}
-            <p className="text-gray-700 leading-relaxed mb-8 text-lg">
+            <p className="text-gray-700 leading-[1.75] mb-8 text-[16px] font-body">
               "I've been ordering from Crispy Fruits for over two years now, and quality never disappoints! The almonds are always fresh and perfectly crunchy, dried apricots are plump and sweet, and everything arrives beautifully packaged. Their customer service is exceptional too. I recently tried their organic trail mix, and it's become my go-to snack for work. Highly recommend to anyone looking for premium quality dry fruits!"
             </p>
 
             {/* Reviewer */}
-            <p className="text-gray-900 font-semibold text-right text-lg">
+            <p className="text-gray-900 font-semibold text-right text-[16px] leading-[1.6] font-body">
               Ananya Patel, Mumbai
             </p>
           </div>
 
           {/* Side Image Block */}
-          <div className="relative bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl shadow-lg p-8 lg:p-10 flex flex-col justify-center items-center text-center min-h-[400px] overflow-hidden">
+          <div className="relative bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 p-8 lg:p-10 flex flex-col justify-center items-center text-center min-h-[400px] overflow-hidden">
             {/* Background Pattern */}
             <div className="absolute inset-0 opacity-10">
               <div className="absolute top-4 left-4 w-20 h-20 bg-green-200 rounded-full"></div>
@@ -56,13 +56,13 @@ const Testimonials = () => {
 
             {/* Content */}
             <div className="relative z-10 space-y-6">
-              <h3 className="text-2xl lg:text-3xl font-bold text-gray-900">
+              <h3 className="text-[22px] lg:text-[26px] font-semibold text-gray-900 leading-[1.3] font-heading">
                 Premium Quality, Perfectly Packed
               </h3>
-              <p className="text-gray-700 text-lg">
+              <p className="text-gray-700 text-[16px] leading-[1.75] font-body">
                 See how we source and package our products
               </p>
-              <button className="bg-[#EDEAD3] text-gray-900 px-8 py-4 rounded-full text-lg font-semibold hover:bg-[#d8d4bf] transition-all duration-300 transform hover:scale-105 shadow-lg">
+              <button className="bg-black text-white px-8 py-4 rounded-full text-[15px] font-semibold tracking-wide hover:bg-opacity-90 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl font-body">
                 READ ALL REVIEWS
               </button>
             </div>

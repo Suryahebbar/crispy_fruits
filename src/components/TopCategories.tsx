@@ -131,14 +131,14 @@ const TopCategories = () => {
   };
 
   return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white to-orange-50">
+    <section className="py-28 px-6 sm:px-10 lg:px-16 bg-white">
       <div className="max-w-7xl mx-auto">
         {/* Title */}
         <div className="text-center mb-12">
-          <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
+          <h2 className="text-[26px] sm:text-[30px] lg:text-[36px] font-bold text-gray-900 mb-4 leading-[1.2] tracking-wide font-heading">
             Popular Dry Fruits
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-[16px] text-gray-700 max-w-2xl mx-auto leading-[1.75] font-body">
             Handpicked selection of premium quality dry fruits from around the world
           </p>
         </div>
@@ -150,9 +150,9 @@ const TopCategories = () => {
               <button
                 key={category}
                 onClick={() => setActiveCategory(category)}
-                className={`px-8 py-3 rounded-full font-semibold text-sm whitespace-nowrap transition-all duration-300 ${
+                className={`px-8 py-4 rounded-full font-semibold text-[15px] tracking-wide whitespace-nowrap transition-all duration-300 font-body ${
                   activeCategory === category
-                    ? 'bg-[#EDEAD3] text-gray-900 shadow-lg transform scale-105'
+                    ? 'bg-black text-white shadow-lg transform scale-105'
                     : 'bg-white text-gray-700 hover:bg-gray-50 shadow-sm border border-gray-200'
                 }`}
               >
@@ -169,7 +169,7 @@ const TopCategories = () => {
             type="button"
             aria-label="Scroll left"
             onClick={scrollLeft}
-            className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-20 h-10 w-10 items-center justify-center rounded-full bg-[#EDEAD3] shadow-lg border border-gray-200 hover:bg-[#d8d4bf] hover:text-gray-900 transition-colors"
+            className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-20 h-10 w-10 items-center justify-center rounded-full bg-black shadow-lg border border-gray-200 hover:bg-opacity-90 hover:text-white transition-colors"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -181,7 +181,7 @@ const TopCategories = () => {
             type="button"
             aria-label="Scroll right"
             onClick={scrollRight}
-            className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-20 h-10 w-10 items-center justify-center rounded-full bg-[#EDEAD3] shadow-lg border border-gray-200 hover:bg-[#d8d4bf] hover:text-gray-900 transition-colors"
+            className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-20 h-10 w-10 items-center justify-center rounded-full bg-black shadow-lg border border-gray-200 hover:bg-opacity-90 hover:text-white transition-colors"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -195,10 +195,13 @@ const TopCategories = () => {
             {products.map((product, index) => (
               <div
                 key={product.id}
-                className="group cursor-pointer transform transition-all duration-500 hover:-translate-y-2 flex-shrink-0 w-72"
-                style={{ animationDelay: `${index * 100}ms` }}
+                className={`group cursor-pointer transform transition-all duration-500 hover:-translate-y-2 flex-shrink-0 w-72`}
+                style={{
+                  '--animation-delay': `${index * 100}ms`,
+                  animationDelay: 'var(--animation-delay)',
+                } as React.CSSProperties}
               >
-                <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden border border-gray-100 h-full flex flex-col">
+                <div className="bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100 h-full flex flex-col">
                   {/* Product Image */}
                   <div className="relative h-56 overflow-hidden">
                     <img
@@ -218,19 +221,19 @@ const TopCategories = () => {
 
                     {/* Quick View Button */}
                     <div className="absolute bottom-4 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0">
-                      <button className="bg-[#EDEAD3] text-gray-900 px-6 py-2 rounded-full text-sm font-semibold shadow-xl hover:bg-[#d8d4bf] transition-colors duration-300">
+                      <button className="bg-black text-white px-6 py-2 rounded-full text-[15px] font-semibold tracking-wide hover:bg-opacity-90 transition-all duration-300 font-body shadow-md hover:shadow-lg">
                         Quick View
                       </button>
                     </div>
                   </div>
 
                   {/* Product Info */}
-                  <div className="p-6 flex flex-col justify-between flex-1">
+                  <div className="p-8 flex flex-col justify-between flex-1">
                     <div>
-                      <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-orange-600 transition-colors duration-300">
+                      <h3 className="text-[22px] font-semibold text-gray-900 mb-2 group-hover:text-orange-600 transition-colors duration-300 leading-[1.3] font-heading">
                         {product.name}
                       </h3>
-                      <p className="text-sm text-gray-600 mb-4 line-clamp-2">
+                      <p className="text-[14px] text-gray-500 mb-4 line-clamp-2 leading-[1.6] font-body">
                         {product.description}
                       </p>
                     </div>
@@ -239,9 +242,12 @@ const TopCategories = () => {
                     <div className="flex items-center justify-between mt-auto">
                       <div>
                         <span className="text-2xl font-bold text-gray-900">{product.price}</span>
-                        <span className="text-sm text-gray-500 ml-1">/500g</span>
+                        <span className="text-[14px] text-gray-500 ml-1">/500g</span>
                       </div>
-                      <button className="bg-[#EDEAD3] text-gray-900 p-3 rounded-full hover:bg-[#d8d4bf] transition-colors duration-300 shadow-md hover:shadow-lg transform hover:scale-110">
+                      <button
+                        className="bg-black text-white p-3 rounded-full hover:bg-opacity-90 transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-110"
+                        aria-label={`Add ${product.name} to cart`}
+                      >
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                         </svg>
@@ -256,7 +262,7 @@ const TopCategories = () => {
 
         {/* Explore More Button */}
         <div className="text-center mt-16">
-          <button className="group relative bg-[#EDEAD3] text-gray-900 px-10 py-4 rounded-full font-semibold text-lg shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 overflow-hidden hover:bg-[#d8d4bf]">
+          <button className="group relative bg-black text-white px-10 py-4 rounded-full font-semibold text-[15px] tracking-wide shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 overflow-hidden hover:bg-opacity-90 font-body">
             <span className="relative z-10 flex items-center gap-2">
               Explore All Products
               <svg className="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">

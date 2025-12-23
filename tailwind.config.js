@@ -65,6 +65,10 @@ module.exports = {
           '2xl': '1400px',
         },
       },
+      fontFamily: {
+        heading: ['var(--font-heading)'],
+        body: ['var(--font-body)'],
+      },
     },
   },
   plugins: [],
