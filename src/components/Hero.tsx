@@ -15,54 +15,46 @@ const heroImages = [
 
 const Hero = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [previousImageIndex, setPreviousImageIndex] = useState(0);
-  const [isFading, setIsFading] = useState(false);
 
-  // Advance slide every 5 seconds
+  // Preload all images on mount
+  useEffect(() => {
+    heroImages.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, []);
+
+  // Handle slide transitions
   useEffect(() => {
     const interval = setInterval(() => {
-      setIsFading(true);
-      // Change image halfway through the fade
-      setTimeout(() => {
-        setPreviousImageIndex(currentImageIndex);
-        setCurrentImageIndex((prev) => (prev + 1) % heroImages.length);
-      }, 350); // Half way through the 700ms fade
-      // Reset fade state after transition completes
-      setTimeout(() => {
-        setIsFading(false);
-      }, 700);
+      setCurrentImageIndex((prev) => (prev + 1) % heroImages.length);
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [currentImageIndex]);
+  }, []);
 
   return (
     <section
       className="relative min-h-screen flex items-center py-28 px-6 sm:px-10 lg:px-16 overflow-hidden"
     >
-      {/* Background image layers */}
-      {/* Previous image - fades out */}
-      <div
-        className={`absolute inset-0 bg-cover bg-center transition-opacity duration-700 blur-sm ${isFading ? 'opacity-0' : 'opacity-100'}`}
-        style={{
-          '--bg-image': `url(${heroImages[previousImageIndex]})`,
-          backgroundImage: 'var(--bg-image)',
-        } as React.CSSProperties}
-      />
-      {/* Current image - fades in */}
-      <div
-        className={`absolute inset-0 bg-cover bg-center transition-opacity duration-700 blur-sm ${isFading ? 'opacity-100' : 'opacity-0'}`}
-        style={{
-          '--bg-image': `url(${heroImages[currentImageIndex]})`,
-          backgroundImage: 'var(--bg-image)',
-        } as React.CSSProperties}
-      />
+      {/* Background images - stacked with crossfade */}
+      {heroImages.map((image, index) => (
+        <div
+          key={index}
+          className="absolute inset-0 bg-cover bg-center blur-sm transition-opacity duration-[2000ms] ease-in-out"
+          style={{
+            backgroundImage: `url(${image})`,
+            opacity: index === currentImageIndex ? 1 : 0,
+            zIndex: index === currentImageIndex ? 1 : 0,
+          }}
+        />
+      ))}
 
       {/* Dark overlay for readability */}
-      <div className="absolute inset-0 bg-black/50" />
+      <div className="absolute inset-0 bg-black/50 z-10" />
 
       {/* Content */}
-      <div className="relative max-w-7xl mx-auto">
+      <div className="relative max-w-7xl mx-auto z-20">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
           {/* Left Column - Text Content */}
           <div className="space-y-6">
