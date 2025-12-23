@@ -10,10 +10,9 @@ const Navbar = () => {
   const menuItems = [
     { name: 'Home', href: '#home' },
     { name: 'Products', href: '#products' },
-    { name: 'About', href: '#about' },
+    // { name: 'About', href: '#about' },
     { name: 'Blog', href: '#blog' },
-    { name: 'Recipes', href: '#recipes' },
-    { name: 'FAQ', href: '#faq' },
+    { name: 'About Us', href: '#faq' },
     { name: 'Contact', href: '#contact' },
   ];
 
@@ -46,11 +45,11 @@ const Navbar = () => {
           : 'bg-white/80 backdrop-blur-sm'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+      <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16">
+        <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <h1 className="text-2xl font-bold text-gray-900">Crispy Fruits</h1>
+            <h1 className="text-[22px] font-bold text-gray-900 font-heading tracking-wide">Crispy Fruits</h1>
           </div>
 
           {/* Desktop Menu */}
@@ -61,7 +60,7 @@ const Navbar = () => {
                   key={item.name}
                   href={item.href}
                   onClick={(e) => handleSmoothScroll(e, item.href)}
-                  className="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors duration-200"
+                  className="text-gray-700 hover:text-gray-900 px-3 py-2 text-[15px] font-semibold tracking-wide transition-colors duration-200 font-body"
                 >
                   {item.name}
                 </a>
@@ -77,7 +76,7 @@ const Navbar = () => {
             >
               <Search size={20} />
             </button>
-            <button className="bg-[#EDEAD3] text-gray-900 px-6 py-2 rounded-full text-sm font-medium hover:bg-[#d8d4bf] transition-colors duration-200">
+            <button className="bg-black text-white px-8 py-4 rounded-full text-[15px] font-semibold tracking-wide hover:bg-opacity-90 transition-all duration-300 font-body shadow-md hover:shadow-lg">
               Sign In
             </button>
           </div>
@@ -102,7 +101,7 @@ const Navbar = () => {
                   key={item.name}
                   href={item.href}
                   onClick={(e) => handleSmoothScroll(e, item.href)}
-                  className="text-gray-700 hover:text-gray-900 block px-3 py-2 text-base font-medium transition-colors duration-200"
+                  className="text-gray-700 hover:text-gray-900 block px-3 py-2 text-[15px] font-semibold tracking-wide transition-colors duration-200 font-body"
                 >
                   {item.name}
                 </a>
@@ -114,7 +113,7 @@ const Navbar = () => {
                 >
                   <Search size={20} />
                 </button>
-                <button className="bg-[#EDEAD3] text-gray-900 px-6 py-2 rounded-full text-sm font-medium hover:bg-[#d8d4bf] transition-colors duration-200">
+                <button className="bg-black text-white px-8 py-4 rounded-full text-[15px] font-semibold tracking-wide hover:bg-opacity-90 transition-all duration-300 font-body shadow-md hover:shadow-lg">
                   Sign In
                 </button>
               </div>

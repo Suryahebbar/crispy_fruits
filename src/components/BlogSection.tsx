@@ -51,19 +51,19 @@ const BlogSection = () => {
   ];
 
   return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
+    <section className="py-28 px-6 sm:px-10 lg:px-16 bg-gray-50">
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-12 gap-4">
           <div>
-            <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-2">
+            <h2 className="text-[26px] sm:text-[30px] lg:text-[36px] font-bold text-gray-900 mb-2 leading-[1.2] tracking-wide font-heading">
               Fresh From Our Blog
             </h2>
-            <p className="text-lg text-gray-600">
+            <p className="text-[16px] text-gray-700 leading-[1.75] font-body">
               Expert tips, recipes, and insights about dry fruits
             </p>
           </div>
-          <button className="group bg-[#EDEAD3] text-gray-900 px-6 py-3 rounded-full font-semibold hover:bg-[#d8d4bf] transition-all duration-300 flex items-center gap-2 shadow-lg hover:shadow-xl transform hover:scale-105">
+          <button className="group bg-black text-white px-8 py-4 rounded-full font-semibold text-[15px] tracking-wide hover:bg-opacity-90 transition-all duration-300 flex items-center gap-2 shadow-lg hover:shadow-xl transform hover:scale-105 font-body">
             View All Posts
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -72,10 +72,10 @@ const BlogSection = () => {
         </div>
 
         {/* Articles Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
           {/* Featured Article - Large Card */}
           <div className="lg:col-span-2">
-            <article className="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden group cursor-pointer border border-gray-100">
+            <article className="bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden group cursor-pointer border border-gray-100">
               {/* Image */}
               <div className="relative h-80 overflow-hidden">
                 <img
@@ -105,15 +105,15 @@ const BlogSection = () => {
 
               {/* Content */}
               <div className="p-8">
-                <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 group-hover:text-orange-600 transition-colors duration-300 leading-tight">
+                <h3 className="text-[22px] font-semibold text-gray-900 mb-4 group-hover:text-orange-600 transition-colors duration-300 leading-[1.3] font-heading">
                   {featuredArticle.title}
                 </h3>
-                <p className="text-lg text-gray-600 mb-6 leading-relaxed">
+                <p className="text-[16px] text-gray-700 mb-6 leading-[1.75] font-body">
                   {featuredArticle.subtitle}
                 </p>
 
                 {/* Read More Button */}
-                <button className="inline-flex items-center gap-2 bg-[#EDEAD3] text-gray-900 px-4 py-2 rounded-full font-semibold group-hover:gap-3 transition-all duration-300 hover:bg-[#d8d4bf]">
+                <button className="inline-flex items-center gap-2 bg-black text-white px-6 py-3 rounded-full font-semibold text-[15px] tracking-wide group-hover:gap-3 transition-all duration-300 hover:bg-opacity-90 font-body">
                   Read Full Article
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
@@ -133,7 +133,7 @@ const BlogSection = () => {
             {sideArticles.slice(0, 2).map((article, index) => (
               <article
                 key={index}
-                className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden group cursor-pointer border border-gray-100 transform hover:-translate-y-1"
+                className="bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden group cursor-pointer border border-gray-100 transform hover:-translate-y-1"
               >
                 <div className="relative">
                   {/* Image */}
@@ -155,16 +155,16 @@ const BlogSection = () => {
                   </div>
 
                   {/* Content */}
-                  <div className="p-6">
-                    <h4 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-orange-600 transition-colors duration-300 line-clamp-2 leading-snug">
+                  <div className="p-8">
+                    <h4 className="text-[22px] font-semibold text-gray-900 mb-2 group-hover:text-orange-600 transition-colors duration-300 line-clamp-2 leading-[1.3] font-heading">
                       {article.title}
                     </h4>
-                    <p className="text-sm text-gray-600 mb-4 line-clamp-2 leading-relaxed">
+                    <p className="text-[14px] text-gray-500 mb-4 line-clamp-2 leading-[1.6] font-body">
                       {article.subtitle}
                     </p>
 
                     {/* Metadata */}
-                    <div className="flex items-center justify-between text-xs text-gray-500 pt-4 border-t border-gray-100">
+                    <div className="flex items-center justify-between text-[14px] text-gray-500 pt-4 border-t border-gray-100 leading-[1.6] font-body">
                       <span>{article.date}</span>
                       <span>{article.readTime}</span>
                     </div>

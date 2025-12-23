@@ -73,24 +73,24 @@ const TrustBadges = () => {
   ];
 
   return (
-    <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
+    <section className="py-28 px-6 sm:px-10 lg:px-16 bg-gray-50">
       <div className="max-w-7xl mx-auto">
         {/* Section Title */}
         <div className="text-center mb-12">
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="text-[26px] sm:text-[30px] lg:text-[36px] font-bold text-gray-900 mb-4 leading-[1.2] tracking-wide font-heading">
             Why Choose Crispy Fruits
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-[16px] text-gray-700 max-w-2xl mx-auto leading-[1.75] font-body">
             We're committed to providing you with the highest quality dry fruits with complete transparency and trust.
           </p>
         </div>
 
         {/* Badges Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {badges.map((badge, index) => (
             <div
               key={index}
-              className="group bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 p-6 text-center transform hover:scale-105"
+              className="group bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 p-8 text-center transform hover:scale-105"
             >
               {/* Icon */}
               <div className={`inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br ${badge.bgColor} mb-4 group-hover:scale-110 transition-transform duration-300`}>
@@ -100,10 +100,10 @@ const TrustBadges = () => {
               </div>
 
               {/* Content */}
-              <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-orange-600 transition-colors duration-300">
+              <h3 className="text-[22px] font-semibold text-gray-900 mb-2 group-hover:text-orange-600 transition-colors duration-300 leading-[1.3] font-heading">
                 {badge.title}
               </h3>
-              <p className="text-sm text-gray-600">
+              <p className="text-[14px] text-gray-500 leading-[1.6] font-body">
                 {badge.description}
               </p>
             </div>

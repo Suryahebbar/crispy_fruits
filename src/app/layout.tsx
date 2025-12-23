@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter } from 'next/font/google';
+import { Inter, Amiri } from 'next/font/google';
 import './globals.css';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -7,8 +7,15 @@ import Footer from '@/components/Footer';
 const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-inter',
+  variable: '--font-body',
   weight: ['400', '500', '600', '700'],
+});
+
+const amiri = Amiri({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-heading',
+  weight: ['400', '700'],
 });
 
 export const metadata: Metadata = {
@@ -74,13 +81,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} scroll-smooth`}>
+    <html lang="en" className={`${inter.variable} ${amiri.variable} scroll-smooth`}>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
       </head>
       <body className="min-h-screen bg-white antialiased">
         <Navbar />
-        <div className="pt-16">
+        <div className="pt-20">
           <main className="flex-1">{children}</main>
           <Footer />
         </div>
