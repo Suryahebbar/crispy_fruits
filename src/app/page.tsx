@@ -1,10 +1,8 @@
 import { Metadata } from 'next';
 import Hero from '@/components/Hero';
 import TopCategories from '@/components/TopCategories';
-import BlogSection from '@/components/BlogSection';
 import Testimonials from '@/components/Testimonials';
 import TrustBadges from '@/components/TrustBadges';
-import Newsletter from '@/components/Newsletter';
 import ContactSection from '@/components/ContactSection';
 
 export const metadata: Metadata = {
@@ -25,19 +23,9 @@ export default function Page() {
         <TopCategories />
       </section>
 
-      {/* Blog Section */}
-      <section id="blog">
-        <BlogSection />
-      </section>
-
       {/* Testimonials Section */}
       <section id="about">
         <Testimonials />
-      </section>
-
-      {/* Newsletter Section */}
-      <section>
-        <Newsletter />
       </section>
 
       {/* Trust Badges Section */}

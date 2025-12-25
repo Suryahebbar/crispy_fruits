@@ -76,7 +76,7 @@ const Navbar = () => {
             <img
               src="/al-fajer-mart-logo.png"
               alt="AL FAJER MART"
-              className="h-12 w-auto"
+              className="h-14 w-auto"
             />
           </div>
 

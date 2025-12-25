@@ -1,7 +1,44 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
-import { ScrollReveal } from './ScrollReveal';
+import React, { useEffect, useRef, useState } from 'react';
+
+// Simple ScrollReveal component
+const ScrollReveal = ({ children, className = "", delayMs = 0 }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => setIsVisible(true), delayMs);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current);
+      }
+    };
+  }, [delayMs]);
+
+  return (
+    <div
+      ref={ref}
+      className={`transition-all duration-1000 ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+      } ${className}`}
+    >
+      {children}
+    </div>
+  );
+};
 
 const TopCategories = () => {
   const [activeCategory, setActiveCategory] = useState('Nuts');
@@ -81,58 +118,10 @@ const TopCategories = () => {
       image: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=800&q=80',
       tag: 'Energy',
     },
-    {
-      id: 9,
-      name: 'Organic Sunflower Seeds',
-      description: 'Lightly roasted, fiber-rich sunflower seeds',
-      price: '₹299',
-      image: 'https://images.unsplash.com/photo-1587049352851-8d4e89133924?auto=format&fit=crop&w=800&q=80',
-      tag: 'Organic',
-    },
-    {
-      id: 10,
-      name: 'Dates Deluxe',
-      description: 'Soft Medjool dates packed with natural sweetness',
-      price: '₹579',
-      image: 'https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=800&q=80',
-      tag: 'New',
-    },
-    {
-      id: 11,
-      name: 'Hazelnut Crunch',
-      description: 'Roasted hazelnuts with a satisfying bite',
-      price: '₹729',
-      image: 'https://images.unsplash.com/photo-1508062878650-88b52897f271?auto=format&fit=crop&w=800&q=80',
-      tag: 'Limited',
-    },
-    {
-      id: 12,
-      name: 'Exotic Fruit Medley',
-      description: 'Blend of kiwi, pineapple, and papaya slices',
-      price: '₹829',
-      image: 'https://images.unsplash.com/photo-1546549032-9571cd6b27df?auto=format&fit=crop&w=800&q=80',
-      tag: 'Exotic',
-    },
   ];
 
-  const carouselRef = useRef<HTMLDivElement | null>(null);
-
-  const scrollByAmount = 320; // roughly one card width
-
-  const scrollLeft = () => {
-    if (carouselRef.current) {
-      carouselRef.current.scrollBy({ left: -scrollByAmount, behavior: 'smooth' });
-    }
-  };
-
-  const scrollRight = () => {
-    if (carouselRef.current) {
-      carouselRef.current.scrollBy({ left: scrollByAmount, behavior: 'smooth' });
-    }
-  };
-
   return (
-    <section className="py-28 px-6 sm:px-10 lg:px-16 bg-white">
+    <section className="py-16 px-6 sm:px-10 lg:px-16 bg-white">
       <ScrollReveal className="max-w-7xl mx-auto" delayMs={100}>
         {/* Title */}
         <div className="text-center mb-12">
@@ -145,13 +134,13 @@ const TopCategories = () => {
         </div>
 
         {/* Category Navigation */}
-        <div className="mb-16">
+        <div className="mb-12">
           <div className="flex overflow-x-auto scrollbar-hide space-x-3 pb-4 justify-center">
             {categories.map((category) => (
               <button
                 key={category}
                 onClick={() => setActiveCategory(category)}
-                className={`px-8 py-4 rounded-full font-semibold text-[15px] tracking-wide whitespace-nowrap transition-all duration-300 font-body ${
+                className={`px-8 py-4 font-semibold text-[15px] tracking-wide whitespace-nowrap transition-all duration-300 font-body ${
                   activeCategory === category
                     ? 'bg-black text-white shadow-lg transform scale-105'
                     : 'bg-white text-gray-700 hover:bg-gray-50 shadow-sm border border-gray-200'
@@ -163,114 +152,80 @@ const TopCategories = () => {
           </div>
         </div>
 
-        {/* Product Cards Carousel */}
-        <div className="relative mt-4">
-          {/* Left button */}
-          <button
-            type="button"
-            aria-label="Scroll left"
-            onClick={scrollLeft}
-            className="hidden md:flex absolute -left-5 top-1/2 -translate-y-1/2 z-20 h-10 w-10 items-center justify-center rounded-full bg-black text-white shadow-lg border border-gray-200 hover:bg-opacity-90 hover:text-white transition-colors"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
+        {/* Product Cards Grid - 4 Columns */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+          {products.map((product, index) => (
+            <div
+              key={product.id}
+              className="group cursor-pointer transform transition-all duration-500 hover:-translate-y-2"
+            >
+              <div className="bg-white shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100 h-full flex flex-col">
+                {/* Product Image */}
+                <div className="relative h-56 overflow-hidden">
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+                  />
+                  {/* Gradient Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
-          {/* Right button */}
-          <button
-            type="button"
-            aria-label="Scroll right"
-            onClick={scrollRight}
-            className="hidden md:flex absolute -right-5 top-1/2 -translate-y-1/2 z-20 h-10 w-10 items-center justify-center rounded-full bg-black text-white shadow-lg border border-gray-200 hover:bg-opacity-90 hover:text-white transition-colors"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
-
-          <div
-            ref={carouselRef}
-            className="flex gap-6 overflow-x-auto scrollbar-hide px-1 scroll-smooth"
-          >
-            {products.map((product, index) => (
-              <div
-                key={product.id}
-                className={`group cursor-pointer transform transition-all duration-500 hover:-translate-y-2 flex-shrink-0 w-72`}
-                style={{
-                  '--animation-delay': `${index * 100}ms`,
-                  animationDelay: 'var(--animation-delay)',
-                } as React.CSSProperties}
-              >
-                <div className="bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100 h-full flex flex-col">
-                  {/* Product Image */}
-                  <div className="relative h-56 overflow-hidden">
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
-                    />
-                    {/* Gradient Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-
-                    {/* Tag Badge */}
-                    <div className="absolute top-4 right-4">
-                      <span className="bg-white/90 backdrop-blur-sm text-orange-600 text-xs font-bold px-3 py-1.5 rounded-full shadow-lg">
-                        {product.tag}
-                      </span>
-                    </div>
-
-                    {/* Quick View Button */}
-                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0">
-                      <button className="bg-black text-white px-6 py-2 rounded-full text-[15px] font-semibold tracking-wide hover:bg-opacity-90 transition-all duration-300 font-body shadow-md hover:shadow-lg">
-                        Quick View
-                      </button>
-                    </div>
+                  {/* Tag Badge */}
+                  <div className="absolute top-4 right-4">
+                    <span className="bg-white/90 backdrop-blur-sm text-orange-600 text-xs font-bold px-3 py-1.5">
+                      {product.tag}
+                    </span>
                   </div>
 
-                  {/* Product Info */}
-                  <div className="p-8 flex flex-col justify-between flex-1">
-                    <div>
-                      <h3 className="text-[22px] font-semibold text-gray-900 mb-2 group-hover:text-orange-600 transition-colors duration-300 leading-[1.3] font-heading">
-                        {product.name}
-                      </h3>
-                      <p className="text-[14px] text-gray-500 mb-4 line-clamp-2 leading-[1.6] font-body">
-                        {product.description}
-                      </p>
-                    </div>
+                  {/* Quick View Button */}
+                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0">
+                    <button className="bg-black text-white px-6 py-2 text-[15px] font-semibold tracking-wide hover:bg-opacity-90 transition-all duration-300 font-body shadow-md hover:shadow-lg">
+                      Quick View
+                    </button>
+                  </div>
+                </div>
 
-                    {/* Price and Add to Cart */}
-                    <div className="flex items-center justify-between mt-auto">
-                      <div>
-                        <span className="text-2xl font-bold text-gray-900">{product.price}</span>
-                        <span className="text-[14px] text-gray-500 ml-1">/500g</span>
-                      </div>
-                      <button
-                        className="bg-black text-white p-3 rounded-full hover:bg-opacity-90 transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-110"
-                        aria-label={`Add ${product.name} to cart`}
-                      >
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                        </svg>
-                      </button>
+                {/* Product Info */}
+                <div className="p-6 flex flex-col justify-between flex-1">
+                  <div>
+                    <h3 className="text-[20px] font-semibold text-gray-900 mb-2 group-hover:text-orange-600 transition-colors duration-300 leading-[1.3] font-heading">
+                      {product.name}
+                    </h3>
+                    <p className="text-[14px] text-gray-500 mb-4 line-clamp-2 leading-[1.6] font-body">
+                      {product.description}
+                    </p>
+                  </div>
+
+                  {/* Price and Add to Cart */}
+                  <div className="flex items-center justify-between mt-auto">
+                    <div>
+                      <span className="text-2xl font-bold text-gray-900">{product.price}</span>
+                      <span className="text-[14px] text-gray-500 ml-1">/500g</span>
                     </div>
+                    <button
+                      className="bg-black text-white p-3 hover:bg-opacity-90 transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-110"
+                      aria-label={`Add ${product.name} to cart`}
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                      </svg>
+                    </button>
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
 
         {/* Explore More Button */}
         <div className="text-center mt-16">
-          <button className="group relative bg-black text-white px-10 py-4 rounded-full font-semibold text-[15px] tracking-wide shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 overflow-hidden hover:bg-opacity-90 font-body">
+          <button className="group relative bg-black text-white px-10 py-4 font-semibold text-[15px] tracking-wide shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 overflow-hidden hover:bg-opacity-90 font-body">
             <span className="relative z-10 flex items-center gap-2">
               Explore All Products
               <svg className="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
             </span>
-            <div className="absolute inset-0 bg-transparent"></div>
           </button>
         </div>
       </ScrollReveal>

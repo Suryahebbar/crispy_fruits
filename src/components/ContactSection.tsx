@@ -34,10 +34,10 @@ const ContactSection = () => {
           </p>
         </div>
 
-        <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr] items-start">
+        <ScrollReveal className="grid gap-10 lg:grid-cols-[1.4fr_1fr] items-start" delayMs={200}>
           {/* Form */}
-          <div className="bg-white rounded-3xl shadow-2xl border border-gray-100 p-8 sm:p-12 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-[#EDEAD3]/20 to-transparent rounded-full blur-3xl -z-0"></div>
+          <div className="bg-white shadow-2xl border border-gray-100 p-8 sm:p-12 relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-[#EDEAD3]/20 to-transparent blur-3xl -z-0"></div>
             
             <div className="relative z-10">
               <h3 className="text-[22px] font-semibold text-gray-900 mb-2 leading-[1.3] font-heading">
@@ -60,7 +60,7 @@ const ContactSection = () => {
                       value={form.name}
                       onChange={handleChange}
                       required
-                      className="w-full rounded-2xl border-2 border-gray-200 px-5 py-3.5 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-200 text-[15px] font-body"
+                      className="w-full border-2 border-gray-200 px-5 py-3.5 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-200 text-[15px] font-body rounded-none"
                       placeholder="Your name"
                     />
                   </div>
@@ -74,7 +74,7 @@ const ContactSection = () => {
                       value={form.email}
                       onChange={handleChange}
                       required
-                      className="w-full rounded-2xl border-2 border-gray-200 px-5 py-3.5 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-200 text-[15px] font-body"
+                      className="w-full border-2 border-gray-200 px-5 py-3.5 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-200 text-[15px] font-body rounded-none"
                       placeholder="you@example.com"
                     />
                   </div>
@@ -90,14 +90,14 @@ const ContactSection = () => {
                     onChange={handleChange}
                     required
                     rows={5}
-                    className="w-full rounded-2xl border-2 border-gray-200 px-5 py-3.5 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent resize-none transition-all duration-200 text-[15px] font-body"
+                    className="w-full border-2 border-gray-200 px-5 py-3.5 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent resize-none transition-all duration-200 text-[15px] font-body rounded-none"
                     placeholder="Tell us how we can help you"
                   />
                 </div>
 
                 <button
                   onClick={handleSubmit}
-                  className="w-full sm:w-auto inline-flex items-center justify-center px-10 py-4 rounded-2xl bg-black text-white font-bold hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 text-[15px] tracking-wide font-body"
+                  className="w-full sm:w-auto inline-flex items-center justify-center px-10 py-4 bg-black text-white font-bold hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 text-[15px] tracking-wide font-body rounded-none"
                 >
                   Send Message
                 </button>
@@ -107,21 +107,21 @@ const ContactSection = () => {
 
           {/* Contact details */}
           <div className="space-y-6">
-            <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-8">
+            <div className="bg-white shadow-xl border border-gray-100 p-8">
               <h3 className="text-[22px] font-semibold mb-4 text-gray-900 leading-[1.3] font-heading">Customer Support</h3>
               <p className="text-gray-700 mb-6 leading-[1.75] text-[16px] font-body">
                 Our team is here to help with orders, product questions, and
                 wholesale enquiries.
               </p>
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-50 text-green-700 rounded-full text-[14px] font-medium leading-[1.6] font-body">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-50 text-green-700 text-[14px] font-medium leading-[1.6] font-body">
                 <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                 Response within 24 hours
               </div>
             </div>
 
-            <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-8 space-y-5">
+            <div className="bg-white shadow-xl border border-gray-100 p-8 space-y-5">
               <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-12 h-12 rounded-2xl bg-[#EDEAD3]/30 flex items-center justify-center">
+                <div className="flex-shrink-0 w-12 h-12 bg-[#EDEAD3]/30 flex items-center justify-center rounded-none">
                   <Mail className="w-5 h-5 text-gray-700" />
                 </div>
                 <div>
@@ -131,7 +131,7 @@ const ContactSection = () => {
               </div>
 
               <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-12 h-12 rounded-2xl bg-[#EDEAD3]/30 flex items-center justify-center">
+                <div className="flex-shrink-0 w-12 h-12 bg-[#EDEAD3]/30 flex items-center justify-center rounded-none">
                   <Phone className="w-5 h-5 text-gray-700" />
                 </div>
                 <div>
@@ -141,7 +141,7 @@ const ContactSection = () => {
               </div>
 
               <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-12 h-12 rounded-2xl bg-[#EDEAD3]/30 flex items-center justify-center">
+                <div className="flex-shrink-0 w-12 h-12 bg-[#EDEAD3]/30 flex items-center justify-center rounded-none">
                   <Clock className="w-5 h-5 text-gray-700" />
                 </div>
                 <div>
@@ -151,9 +151,9 @@ const ContactSection = () => {
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-[#EDEAD3]/20 to-[#EDEAD3]/5 rounded-3xl border-2 border-dashed border-[#EDEAD3] p-8">
+            <div className="bg-gradient-to-br from-[#EDEAD3]/20 to-[#EDEAD3]/5 border-2 border-dashed border-[#EDEAD3] p-8">
               <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-12 h-12 rounded-2xl bg-white flex items-center justify-center shadow-sm">
+                <div className="flex-shrink-0 w-12 h-12 bg-white flex items-center justify-center shadow-sm rounded-none">
                   <Gift className="w-5 h-5 text-gray-700" />
                 </div>
                 <div>
@@ -166,7 +166,7 @@ const ContactSection = () => {
               </div>
             </div>
           </div>
-        </div>
+        </ScrollReveal>
       </ScrollReveal>
     </section>
   );
