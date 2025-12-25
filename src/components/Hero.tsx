@@ -1,122 +1,325 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { ScrollReveal } from './ScrollReveal';
+import React, { useEffect, useRef, useState } from 'react';
 
-// Background slideshow images (direct Unsplash CDN URLs) - fruit focused
-const heroImages = [
-  'https://images.unsplash.com/photo-1645291787981-fbb3094ae87b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 
-  'https://plus.unsplash.com/premium_photo-1723629871940-b8bbdf40ec43?q=80&w=2015&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 
-  'https://images.unsplash.com/photo-1620589537410-be8f708dd12e?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  'https://images.unsplash.com/photo-1661836990173-97481f67f85b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 
-  'https://images.unsplash.com/photo-1614061811858-dde54a522f5e?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 
-  'https://plus.unsplash.com/premium_photo-1668677227454-213252229b73?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  'https://images.unsplash.com/photo-1579293676449-9f0f5dead43f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-];
+// Simple ScrollReveal component
+const ScrollReveal = ({ children, className = "", delayMs = 0 }: { 
+  children: React.ReactNode; 
+  className?: string; 
+  delayMs?: number; 
+}) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef<HTMLDivElement | null>(null);
 
-const Hero = () => {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
-  // Preload all images on mount
   useEffect(() => {
-    heroImages.forEach((src) => {
-      const img = new Image();
-      img.src = src;
-    });
-  }, []);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => setIsVisible(true), delayMs);
+        }
+      },
+      { threshold: 0.1 }
+    );
 
-  // Handle slide transitions
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentImageIndex((prev) => (prev + 1) % heroImages.length);
-    }, 5000);
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
 
-    return () => clearInterval(interval);
-  }, []);
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current);
+      }
+    };
+  }, [delayMs]);
 
   return (
-    <section
-      className="relative min-h-screen flex items-center py-28 px-6 sm:px-10 lg:px-16 overflow-hidden"
+    <div
+      ref={ref}
+      className={`transition-all duration-1000 ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+      } ${className}`}
     >
-      {/* Background images - stacked with crossfade */}
-      {heroImages.map((image, index) => (
+      {children}
+    </div>
+  );
+};
+
+const Hero = () => {
+  // Countdown timer state - starts from 6.5 days (156 hours)
+  const [timeLeft, setTimeLeft] = useState({
+    days: 6,
+    hours: 12,
+    minutes: 0,
+    seconds: 0
+  });
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft(prev => {
+        let { days, hours, minutes, seconds } = prev;
+        
+        // Countdown logic
+        if (seconds > 0) {
+          seconds--;
+        } else if (minutes > 0) {
+          minutes--;
+          seconds = 59;
+        } else if (hours > 0) {
+          hours--;
+          minutes = 59;
+          seconds = 59;
+        } else if (days > 0) {
+          days--;
+          hours = 23;
+          minutes = 59;
+          seconds = 59;
+        } else {
+          // Reset to 6.5 days when countdown reaches 0
+          days = 6;
+          hours = 12;
+          minutes = 0;
+          seconds = 0;
+        }
+        
+        return { days, hours, minutes, seconds };
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  // Format numbers to always show 2 digits
+  const formatTime = (num: number) => String(num).padStart(2, '0');
+
+  return (
+    <>
+      <section
+        className="relative min-h-screen flex items-center py-28 px-6 sm:px-10 lg:px-16"
+      >
+        {/* Background image */}
         <div
-          key={index}
-          className="absolute inset-0 bg-cover bg-center blur-sm transition-opacity duration-[2000ms] ease-in-out"
+          className="absolute inset-0 bg-cover bg-center"
           style={{
-            backgroundImage: `url(${image})`,
-            opacity: index === currentImageIndex ? 1 : 0,
-            zIndex: index === currentImageIndex ? 1 : 0,
+            backgroundImage: `url(/Hero_BG.jpg)`,
           }}
         />
-      ))}
 
-      {/* Dark overlay for readability */}
-      <div className="absolute inset-0 bg-black/50 z-10" />
+        {/* Content */}
+        <div className="relative max-w-7xl mx-auto w-full z-20">
+          <div className="flex justify-end">
+            <div className="max-w-xl lg:max-w-2xl">
+              {/* Text Content */}
+              <ScrollReveal className="space-y-6" delayMs={100}>
+                <div className="space-y-4">
+                  <span className="inline-block bg-white text-black text-[10px] sm:text-[11px] font-semibold tracking-widest px-4 py-1.5 rounded-sm mb-2">
+                    PURE HEALTHY
+                  </span>
+                  <h1 className="text-[28px] sm:text-[36px] lg:text-[44px] font-bold text-white leading-[1.15] tracking-wide font-heading">
+                    KASHMIRI DRY FRUITS &{' '}
+                    <span className="block mt-1">HIMALAYAN SHILAJIT</span>
+                  </h1>
+                  <p className="text-[13px] sm:text-[14px] text-gray-200 leading-[1.75] max-w-lg font-body">
+                    Don't get stuck with fake products! We are a Kashmiri-based distributor of authentic Shilajit, premium saffron, and high-quality dry fruits. With us, you get genuine products straight from the source. First try, then trust — experience the difference!
+                  </p>
+                </div>
 
-      {/* Content */}
-      <div className="relative max-w-7xl mx-auto z-20">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-          {/* Left Column - Text Content */}
-          <ScrollReveal className="space-y-6" delayMs={100}>
-            <div className="space-y-4">
-              <h1 className="text-[32px] sm:text-[40px] lg:text-[52px] font-bold text-white leading-[1.15] tracking-wide font-heading">
-                Discover Nature's{' '}
-                <span className="text-gray-300">Crunchy Treasures</span>
-              </h1>
-              <p className="text-[16px] text-gray-200 leading-[1.75] max-w-md font-body">
-                From premium almonds to exotic dried berries, explore our collection of handpicked dry fruits that bring health and flavor to your daily routine. Sustainably sourced, naturally delicious.
-              </p>
+                <button
+                  className="bg-black text-white px-8 py-3.5 rounded-sm text-[14px] font-semibold tracking-wide font-body hover:bg-gray-900 transition-colors"
+                >
+                  Shop Now
+                </button>
+              </ScrollReveal>
             </div>
+          </div>
+        </div>
+      </section>
 
-            <button
-              className="bg-black text-white px-8 py-4 rounded-full text-[15px] font-semibold tracking-wide hover:bg-opacity-90 transition-all duration-300 font-body shadow-lg hover:shadow-xl"
-            >
-              Shop Now
-            </button>
-          </ScrollReveal>
+      {/* Card Section - Overlapping Hero */}
+      <div className="relative -mt-48 lg:-mt-56 z-30 px-6 sm:px-10 lg:px-16 mb-16">
+        <div className="max-w-7xl mx-auto">
+          <div className="bg-white shadow-lg">
+            <div className="px-8 sm:px-12 lg:px-20 xl:px-32 py-12 lg:py-16">
+              {/* Header */}
+              <div className="mb-8">
+                <p className="text-[10px] sm:text-[11px] font-semibold tracking-[0.2em] text-[#C9A96E] uppercase mb-3">
+                  CHOOSE DELICIOUS & HEALTHY
+                </p>
+                <h2 className="text-[32px] sm:text-[36px] lg:text-[40px] font-bold text-black leading-tight">
+                  CHOOSE AL FAJER MART
+                </h2>
+              </div>
 
-          {/* Right Column - Image Grid (Asymmetric Layout) */}
-          <ScrollReveal className="relative h-[440px]" delayMs={200}>
-            {/* Large card - Left (full height) - Almonds */}
-            <div className="absolute left-0 top-0 w-[48%] h-full">
-              <div className="w-full h-full bg-gray-200 rounded-2xl overflow-hidden">
-                <img
-                  src="https://images.unsplash.com/photo-1600189020840-e9918c25269d?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                  alt="Premium Almonds"
-                  className="w-full h-full object-cover brightness-[0.98]"
-                  loading="eager"
-                />
+              {/* Two Column Content */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
+                {/* Left Column */}
+                <div className="text-[14px] sm:text-[15px] text-gray-700 leading-[1.8]">
+                  <p>
+                    At <span className="font-semibold text-black">Kashmir-based</span> distributors, we take pride in offering 100% pure{' '}
+                    <span className="font-semibold text-black">Shilajit</span> and{' '}
+                    <span className="font-semibold text-black">saffron</span> straight from the lush valleys of Kashmir. Our{' '}
+                    <span className="font-semibold text-black">Shilajit</span> is known for its rich mineral content, offering numerous health benefits like increased energy, improved stamina, and detoxification. Similarly, our{' '}
+                    <span className="font-semibold text-black">saffron</span>, known for its vibrant color and strong aroma, is handpicked to ensure the highest quality. Avoid counterfeit products in the market—<span className="font-semibold text-black">first try, then trust</span> our authentic Kashmiri Shilajit and saffron.
+                  </p>
+                </div>
+
+                {/* Right Column */}
+                <div className="text-[14px] sm:text-[15px] text-gray-700 leading-[1.8]">
+                  <p>
+                    Our <span className="font-semibold text-black">dry fruits</span> are sourced directly from the orchards of Kashmir, where the climate and soil produce some of the finest{' '}
+                    <span className="font-semibold text-black">walnuts, almonds, and apricots</span>. We ensure that every nut and fruit is fresh, nutrient-dense, and packed with flavor. Whether you're looking to boost your daily nutrition or add a touch of richness to your dishes, our premium{' '}
+                    <span className="font-semibold text-black">dry fruits</span> deliver unmatched quality and taste. Don't settle for substandard options—choose the best with our Kashmiri-sourced dry fruits for a healthy, authentic experience.
+                  </p>
+                </div>
               </div>
             </div>
-
-            {/* Top Right card - Half height with gap - Pistachios */}
-            <div className="absolute right-0 top-0 w-[48%] h-[210px]">
-              <div className="w-full h-full bg-gray-200 rounded-2xl overflow-hidden">
-                <img
-                  src="https://images.unsplash.com/photo-1579282940892-6152e6e80c52?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                  alt="Pistachios in Bowl"
-                  className="w-full h-full object-cover brightness-[0.98]"
-                  loading="eager"
-                />
-              </div>
-            </div>
-
-            {/* Bottom Right card - Half height with gap - Walnuts */}
-            <div className="absolute right-0 bottom-0 w-[48%] h-[210px]">
-              <div className="w-full h-full bg-gray-200 rounded-2xl overflow-hidden">
-                <img
-                  src="https://images.unsplash.com/photo-1726771517475-e7acdd34cd8a?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                  alt="Shelled Walnuts"
-                  className="w-full h-full object-cover brightness-[0.98]"
-                  loading="eager"
-                />
-              </div>
-            </div>
-          </ScrollReveal>
+          </div>
         </div>
       </div>
-    </section>
+
+      {/* Purple Banner Section */}
+      <div className="relative px-6 sm:px-10 lg:px-16 mb-16">
+        <div className="max-w-7xl mx-auto">
+          <div className="bg-gradient-to-r from-purple-900 to-pink-800 py-20 px-8 sm:px-12 lg:px-16 relative overflow-hidden">
+            {/* Decorative Background Pattern */}
+            <div className="absolute inset-0 opacity-10">
+              <div className="absolute inset-0" style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+              }}></div>
+            </div>
+
+            <div className="relative z-10">
+              <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
+                {/* Left - Product Categories */}
+                <div className="text-white space-y-4 lg:items-start items-center flex flex-col">
+                  <p className="text-[15px] sm:text-[16px] font-light tracking-[0.15em] uppercase">SHILAJIT</p>
+                  <p className="text-[15px] sm:text-[16px] font-light tracking-[0.15em] uppercase">SAFFRON</p>
+                  <p className="text-[15px] sm:text-[16px] font-light tracking-[0.15em] uppercase">DRY FRUITS</p>
+                </div>
+
+                {/* Center - Countdown Timer */}
+                <div className="text-center text-white flex-1">
+                  <h2 className="text-[32px] sm:text-[40px] lg:text-[44px] font-bold mb-1 tracking-wide">
+                    BUY 1 GET 1 FREE
+                  </h2>
+                  <p className="text-[13px] sm:text-[14px] font-light tracking-[0.2em] uppercase mb-6">
+                    LIMITED TIME OFFER
+                  </p>
+                  
+                  {/* Countdown */}
+                  <div className="flex justify-center gap-3 sm:gap-5">
+                    <div className="flex flex-col items-center">
+                      <div className="text-[52px] sm:text-[60px] lg:text-[68px] font-bold leading-none tracking-tight">
+                        {formatTime(timeLeft.days)}
+                      </div>
+                      <div className="text-[11px] sm:text-[12px] font-light uppercase tracking-wider mt-1">Days</div>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <div className="text-[52px] sm:text-[60px] lg:text-[68px] font-bold leading-none tracking-tight">
+                        {formatTime(timeLeft.hours)}
+                      </div>
+                      <div className="text-[11px] sm:text-[12px] font-light uppercase tracking-wider mt-1">Hours</div>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <div className="text-[52px] sm:text-[60px] lg:text-[68px] font-bold leading-none tracking-tight">
+                        {formatTime(timeLeft.minutes)}
+                      </div>
+                      <div className="text-[11px] sm:text-[12px] font-light uppercase tracking-wider mt-1">Minutes</div>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <div className="text-[52px] sm:text-[60px] lg:text-[68px] font-bold leading-none tracking-tight">
+                        {formatTime(timeLeft.seconds)}
+                      </div>
+                      <div className="text-[11px] sm:text-[12px] font-light uppercase tracking-wider mt-1">Seconds</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right - CTA Button */}
+                <div className="flex lg:justify-end justify-center">
+                  <button className="bg-white text-black px-9 py-3.5 text-[13px] font-semibold tracking-wide hover:bg-gray-100 transition-colors">
+                    Shop Now
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Products Section */}
+      <div className="py-16 px-6 sm:px-10 lg:px-16 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Left Column - Shilajit Description (Takes full height) */}
+            <div className="lg:row-span-2 bg-[#E8DCC8] p-8 lg:p-12 flex flex-col justify-between">
+              <div>
+                <p className="text-[11px] font-semibold tracking-[0.2em] text-[#B8935C] uppercase mb-4">
+                  100% BEST QUALITY SHILAJIT
+                </p>
+                <h3 className="text-[28px] sm:text-[32px] font-bold text-black mb-6 leading-tight">
+                  PURE HIMALAYAN SHILAJIT
+                </h3>
+                <p className="text-[14px] text-gray-700 leading-relaxed mb-8">
+                  After being sourced from the great Himalayan ranges in a short harvesting period from these extreme high altitudes, it is traditionally purified using the ancient Shodhana technique using only Triphala in natural spring water and the sun.
+                </p>
+              </div>
+              <button className="border-2 border-black text-black px-8 py-3 text-[13px] font-semibold tracking-wide uppercase hover:bg-black hover:text-white transition-colors w-fit">
+                SHOP NOW
+              </button>
+            </div>
+
+            {/* Right Column - Product Cards */}
+            <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {/* Product Card 1 - Shilajit Product */}
+              <div className="relative overflow-hidden group cursor-pointer bg-white shadow-sm">
+                <div className="absolute top-4 left-4 bg-red-500 text-white text-[11px] font-bold px-2.5 py-1 rounded z-10">
+                  -43%
+                </div>
+                <div className="relative h-[280px] bg-gradient-to-b from-blue-100 to-blue-200 flex items-center justify-center overflow-hidden">
+                  <img 
+                    src="https://images.unsplash.com/photo-1629738601425-494c3d6ba3e2?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                    alt="Pure Himalayan Shilajit"
+                    className="object-contain h-full w-full group-hover:scale-110 transition-transform duration-300"
+                  />
+                </div>
+                <div className="p-5">
+                  <h4 className="text-[13px] font-semibold text-black mb-3 uppercase tracking-wide leading-tight">
+                    PURE HIMALAYAN SHILAJIT BY AL FAJER MART — NATURAL STAMINA BOOSTER
+                  </h4>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[16px] font-bold text-black">₹400.00</span>
+                    <span className="text-[13px] text-gray-500 line-through">₹1,330.00</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Product Card 2 - Saffron Product */}
+              <div className="relative overflow-hidden group cursor-pointer bg-white shadow-sm">
+                <div className="absolute top-4 left-4 bg-red-500 text-white text-[11px] font-bold px-2.5 py-1 rounded z-10">
+                  -70%
+                </div>
+                <div className="relative h-[280px] bg-[#D4B896] flex items-center justify-center overflow-hidden">
+                  <img 
+                    src="https://images.unsplash.com/photo-1564057779901-11451bfca03b?q=80&w=2067&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                    alt="Healthy Kashmiri Saffron"
+                    className="object-contain h-full w-full group-hover:scale-110 transition-transform duration-300"
+                  />
+                </div>
+                <div className="p-5">
+                  <h4 className="text-[13px] font-semibold text-black mb-3 uppercase tracking-wide leading-tight">
+                    HEALTHY KASHMIRI SAFFRON (KESAR) — PREMIUM SPICE GOOD FOR HEALTH
+                  </h4>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[16px] font-bold text-black">₹300.00</span>
+                    <span className="text-[13px] text-gray-500 line-through">₹3,000.00</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 
